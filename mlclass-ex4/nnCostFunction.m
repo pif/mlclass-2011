@@ -51,10 +51,7 @@ size(Theta1)		;%   25   401
 size(Theta2)		;%   10   26
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % prepare y
-yy = zeros(size(y));
-for i = 1:m
-  yy(i,y(i)) = 1;
-end;
+y = eye(num_labels)(y,:)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % predict

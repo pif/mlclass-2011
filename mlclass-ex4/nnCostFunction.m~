@@ -82,7 +82,7 @@ size(regt1)		%   25   401
 size(regt2)		%   10   26
 reg = l*(sum(sum(regt1 .^ 2)) + sum(sum(regt2 .^ 2)))/(2*m);
 
-%J += reg;
+J += reg;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
