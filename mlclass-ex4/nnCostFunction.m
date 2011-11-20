@@ -51,7 +51,7 @@ size(Theta1)		;%   25   401
 size(Theta2)		;%   10   26
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % prepare y
-y = eye(num_labels)(y,:)
+y = eye(num_labels)(y,:);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % predict
@@ -68,7 +68,7 @@ ho = a3;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ho = ho';
 size(ho);		%   10   5000
-J = sum(sum(-yy.*log(ho)-(1-yy).*log(1-ho))')/m;
+J = sum(sum(-y.*log(ho)-(1-y).*log(1-ho))')/m;
 
 l = 1;
 size(Theta1)		%   25   401
@@ -77,7 +77,7 @@ regt1 = Theta1(:, 2:end);
 regt2 = Theta2(:, 2:end);
 size(regt1)		%   25   401
 size(regt2)		%   10   26
-reg = l*(sum(sum(regt1 .^ 2)) + sum(sum(regt2 .^ 2)))/(2*m);
+reg = (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)))*lambda/(2*m);
 
 J += reg;
 

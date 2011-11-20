@@ -51,10 +51,7 @@ size(Theta1)		;%   25   401
 size(Theta2)		;%   10   26
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % prepare y
-yy = zeros(size(y));
-for i = 1:m
-  yy(i,y(i)) = 1;
-end;
+y = eye(num_labels)(y,:);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % predict
@@ -71,7 +68,7 @@ ho = a3;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ho = ho';
 size(ho);		%   10   5000
-J = sum(sum(-yy.*log(ho)-(1-yy).*log(1-ho))')/m;
+J = sum(sum(-y.*log(ho)-(1-y).*log(1-ho))')/m;
 
 l = 1;
 size(Theta1)		%   25   401
