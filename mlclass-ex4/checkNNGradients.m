@@ -23,9 +23,16 @@ Theta2 = debugInitializeWeights(num_labels, hidden_layer_size);
 % Reusing debugInitializeWeights to generate X
 X  = debugInitializeWeights(m, input_layer_size - 1);
 y  = 1 + mod(1:m, num_labels)';
-
 % Unroll parameters
 nn_params = [Theta1(:) ; Theta2(:)];
+
+%%%%%%%%%%%%%%%%%%%
+size(X)		% 5 3
+size(y)		% 5 1
+size(Theta1)	% 5 4
+size(Theta2)	% 3 6
+size(nn_params)	% 38 1
+%%%%%%%%%%%%%%%%%%%
 
 % Short hand for cost function
 costFunc = @(p) nnCostFunction(p, input_layer_size, hidden_layer_size, ...
@@ -34,6 +41,13 @@ costFunc = @(p) nnCostFunction(p, input_layer_size, hidden_layer_size, ...
 [cost, grad] = costFunc(nn_params);
 numgrad = computeNumericalGradient(costFunc, nn_params);
 
+fprintf('SIZE numgrad, grad');
+size(numgrad)
+size(grad)
+fprintf('numgrad above, grad below');
+disp(numgrad)
+fprintf('numgrad above, grad below');
+disp(grad)
 % Visually examine the two gradient computations.  The two columns
 % you get should be very similar. 
 disp([numgrad grad]);

@@ -6,7 +6,7 @@ function g = sigmoidGradient(z)
 %   vector. In particular, if z is a vector or matrix, you should return
 %   the gradient for each element.
 
-s = size(z)
+s = size(z);
 g = zeros(s);
 
 % ====================== YOUR CODE HERE ======================
@@ -15,7 +15,7 @@ g = zeros(s);
 
 for i = 1:s(1)
   for j = 1:s(2)
-    fg = 1/(1+e^(-z(i,j)))
+    fg = 1/(1+e^(-z(i,j)));
     g(i,j)=fg*(1-fg);
   end;
 end;

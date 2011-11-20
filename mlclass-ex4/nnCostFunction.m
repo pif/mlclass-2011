@@ -40,6 +40,7 @@ Theta2_grad = zeros(size(Theta2));
 %         computed in ex4.m
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fprintf('my variable sizes\n');
 size(nn_params)		;%   10285       1
 size(input_layer_size)	;%   1   1
 size(hidden_layer_size)	;%   1   1
@@ -47,22 +48,29 @@ size(num_labels)	;%   1   1
 size(X)			;%   5000    400
 size(y)			;%   5000      1
 size(lambda)		;%   1   1
-size(Theta1)		;%   25   401
-size(Theta2)		;%   10   26
+size(Theta1)		%   25   401
+size(Theta2)		%   10   26
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% prepare y
+% prepare x,y
 y = eye(num_labels)(y,:);
+y = y';
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% predict
-ho = zeros(size(X, 1), 1);
+ho = zeros(m, 1);
 X = X';
-X = [ones(size(X,2),1)'; X];
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% forward prop
+ho = ho';
+X = [ones(1,m); X];
 X = X';
 z2 = Theta1*X';
+size(Theta1); 	% 25  401
+size(X);	% 5000  401
+size(z2);	% 25  5000
 a2 = sigmoid(z2);
 a2 = [ones(size(a2,2),1)'; a2];
 z3 = Theta2*a2;
+size(Theta2);	% 10  26
+size(z3);	% 10  5000
 a3 = sigmoid(z3);
 ho = a3;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -71,17 +79,11 @@ size(ho);		%   10   5000
 J = sum(sum(-y.*log(ho)-(1-y).*log(1-ho))')/m;
 
 l = 1;
-size(Theta1)		%   25   401
-size(Theta2)		%   10   26
 regt1 = Theta1(:, 2:end);
 regt2 = Theta2(:, 2:end);
-size(regt1)		%   25   401
-size(regt2)		%   10   26
 reg = (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)))*lambda/(2*m);
 
 J += reg;
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Part 2: Implement the backpropagation algorithm to compute the gradients
@@ -90,19 +92,31 @@ J += reg;
 %         Theta2_grad, respectively. After implementing Part 2, you can check
 %         that your implementation is correct by running checkNNGradients
 %
-%         Note: The vector y passed into the function is a vector of labels
-%               containing values from 1..K. You need to map this vector into a 
-%               binary vector of 1's and 0's to be used with the neural network
-%               cost function.
-%
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
 %
 
-for t = 1:m
-  a = X(t);
-end;
+d3 = a3-y';
+szt2 = Theta2'(2:end,:);
+size(szt2);
+size(d3);
+sz2 = sigmoidGradient(z2);
+size(sz2);
+%   26   10
+%   10   5000
+%   25   5000
+% z2 = [ones(1,5000);z2];
+d2 = szt2*d3.*sz2;
+
+D1 = d2*a2(2:end,:)';
+D2 = d3*a3(2:end,:)';
+
+Theta1_grad = D1/m;
+Theta2_grad = D2/m;
+% for t = 1:m
+%   a = X(t);
+% end;
 
 
 % Part 3: Implement regularization with the cost function and gradients.
@@ -116,27 +130,15 @@ end;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 % -------------------------------------------------------------
 
 % =========================================================================
 
 % Unroll gradients
+%disp(Theta1_grad)
+%disp(Theta2_grad)
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
+size(grad);
+size(J);
 
 end
