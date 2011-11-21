@@ -40,7 +40,7 @@ Theta2_grad = zeros(size(Theta2));
 %         computed in ex4.m
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-fprintf('my variable sizes\n');
+%fprintf('my variable sizes\n');
 size(nn_params)		;%   10285       1
 size(input_layer_size)	;%   1   1
 size(hidden_layer_size)	;%   1   1
@@ -48,37 +48,27 @@ size(num_labels)	;%   1   1
 size(X)			;%   5000    400
 size(y)			;%   5000      1
 size(lambda)		;%   1   1
-size(Theta1)		%   25   401
-size(Theta2)		%   10   26
+size(Theta1)		;%   25   401
+size(Theta2)		;%   10   26
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % prepare x,y
 y = eye(num_labels)(y,:);
-y = y';
+y = y'; % 10 5000
 
-ho = zeros(m, 1);
 X = X';
+ho = zeros(m, 1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % forward prop
-ho = ho';
-X = [ones(1,m); X];
-X = X';
-z2 = Theta1*X';
-size(Theta1); 	% 25  401
-size(X);	% 5000  401
-size(z2);	% 25  5000
-a2 = sigmoid(z2);
-a2 = [ones(size(a2,2),1)'; a2];
-z3 = Theta2*a2;
-size(Theta2);	% 10  26
-size(z3);	% 10  5000
-a3 = sigmoid(z3);
+a1 = [ones(1,m); X]; % 401 5000
+z2 = Theta1*a1; % 25 401 x 401 5000 = 25 5000
+a2 = sigmoid(z2); % 25 5000
+a2 = [ones(1,m); a2]; % 26 5000
+z3 = Theta2*a2; % 10 26 x 26 5000 = 10 5000
+a3 = sigmoid(z3); % 10 5000
 ho = a3;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-ho = ho';
-size(ho);		%   10   5000
-J = sum(sum(-y.*log(ho)-(1-y).*log(1-ho))')/m;
+J = sum(sum(-y.*log(ho)-(1-y).*log(1-ho)))/m;
 
-l = 1;
 regt1 = Theta1(:, 2:end);
 regt2 = Theta2(:, 2:end);
 reg = (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)))*lambda/(2*m);
@@ -97,20 +87,12 @@ J += reg;
 %               first time.
 %
 
-d3 = a3-y';
-szt2 = Theta2'(2:end,:);
-size(szt2);
-size(d3);
-sz2 = sigmoidGradient(z2);
-size(sz2);
-%   26   10
-%   10   5000
-%   25   5000
-% z2 = [ones(1,5000);z2];
-d2 = szt2*d3.*sz2;
+d3 = a3-y; % 10 5000
+d2 = Theta2'*d3.*[ones(1,m); sigmoidGradient(z2)]; % 26 10 x 10 5000 .x 26 5000 = 26 5000
+d2 = d2(2:end,:); % 25 5000
 
-D1 = d2*a2(2:end,:)';
-D2 = d3*a3(2:end,:)';
+D1 = d2*a1';
+D2 = d3*a2';
 
 Theta1_grad = D1/m;
 Theta2_grad = D2/m;
