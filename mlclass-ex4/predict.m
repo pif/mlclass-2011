@@ -33,9 +33,9 @@ z1 = sigmoid(Theta1*X');
 z1 = [ones(size(z1,2),1)'; z1];
 
 z2 = sigmoid(Theta2*z1);
-%[im id] = max(z2',[],2);
+[im id] = max(z2',[],2);
 
-p = z2; %id;
+p = id;
 
 
 

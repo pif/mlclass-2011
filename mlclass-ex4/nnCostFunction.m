@@ -94,8 +94,8 @@ d2 = d2(2:end,:); % 25 5000
 D1 = d2*a1';
 D2 = d3*a2';
 
-Theta1_grad = D1/m;
-Theta2_grad = D2/m;
+Theta1_grad = D1/m + (lambda/m)*[zeros(size(Theta1,1),1) Theta1(:,2:end)];
+Theta2_grad = D2/m + (lambda/m)*[zeros(size(Theta2,1),1) Theta2(:,2:end)];
 % for t = 1:m
 %   a = X(t);
 % end;
