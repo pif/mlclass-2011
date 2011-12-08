@@ -62,8 +62,8 @@ for i = 1:m
   xtr = X(1:i, :);
   ytr = y(1:i);
 
-th = trainLinearReg(xtr, ytr, lambda)
-%th = [th(1,1)+th(2,1);th(3,1)]
+  th = trainLinearReg(xtr, ytr, lambda);
+  %th = [th(1,1)+th(2,1);th(3,1)]
 
   error_train(i) = linearRegCostFunction(xtr, ytr, th, 0);
 
