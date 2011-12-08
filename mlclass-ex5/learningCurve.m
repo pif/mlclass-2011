@@ -55,10 +55,20 @@ error_val   = zeros(m, 1);
 
 % ---------------------- Sample Solution ----------------------
 
+th = trainLinearReg([ones(m, 1) X], y, lambda)
+th = [th(1,1)+th(2,1);th(3,1)]
 
+for i = 1:m
+  xtr = X(1:i, :);
+  ytr = y(1:i);
+  error_train(i) = error_val(i) = linearRegCostFunction(xtr, ytr, th, 0);
+end
 
-
-
+for i = 1:m
+  xtr = Xval(1:i, :);
+  ytr = yval(1:i);
+  error_val(i) = linearRegCostFunction(xtr, ytr, th, 0);
+end
 
 
 % -------------------------------------------------------------
