@@ -33,7 +33,7 @@ errors = zeros(LpC, LpS);
 minerr = 10000;
 for i = 1:LpC
 	for j = 1:LpS
-		err = trainModel(pC(i), pS(j), X,y, Xval, yval);
+		[err, model, predict] = trainModel(pC(i), pS(j), X,y, Xval, yval);
 
 		errors(i,j) = err;
 		fprintf('Error: %f\t MinError: %f\t',err, minerr);
@@ -42,7 +42,9 @@ for i = 1:LpC
 			C = pC(i);
 			sigma = pS(j);
 		endif 
-		
+			
+		visualizeBoundary(Xval, yval, model);
+pause;
 	end
 end
 

@@ -72,7 +72,7 @@ fprintf('(this may take 1 to 2 minutes) ...\n')
 
 C = 0.1;
 model = svmTrain(X, y, C, @linearKernel);
-
+save trainedModel.mat model;
 p = svmPredict(model, X);
 
 fprintf('Training Accuracy: %f\n', mean(double(p == y)) * 100);
