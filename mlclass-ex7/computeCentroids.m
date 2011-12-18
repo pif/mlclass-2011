@@ -25,20 +25,25 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
-K
-size(K)
 
-size(centroids)
-size(X)
+size(centroids);
+size(X);
 for i = 1:m
     % size(centroids(idx(i)))
     % size(X(i,:))
 	centroids(idx(i),:)+=X(i,:);
 end
+%centroids
+%size(idx)
+acc = accumarray(idx,1);
+cns = repmat(acc,1,n);
+diff = -size(cns,1)+ size(centroids,1);
 
+if (diff>0) 
+	cns = [cns; zeros(diff,n)];
+end
 
-cns = repmat(accumarray(idx,1),1,n);
-
+size(cns);
 centroids = centroids./cns;
 
 % =============================================================
