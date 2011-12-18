@@ -25,13 +25,21 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
+K
+size(K)
+
+size(centroids)
+size(X)
+for i = 1:m
+    % size(centroids(idx(i)))
+    % size(X(i,:))
+	centroids(idx(i),:)+=X(i,:);
+end
 
 
+cns = repmat(accumarray(idx,1),1,n);
 
-
-
-
-
+centroids = centroids./cns;
 
 % =============================================================
 

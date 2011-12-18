@@ -20,11 +20,12 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
-
-
-
-
+%size(X)
+%size(centroids)
+for i = 1:length(X)
+	ex = X(i,:);
+	[minidx,idx(i)] = min(sum((centroids - repmat(ex,K,1)).^2,2));
+end
 
 
 % =============================================================
